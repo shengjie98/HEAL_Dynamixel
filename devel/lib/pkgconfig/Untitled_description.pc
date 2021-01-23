@@ -1,0 +1,8 @@
+prefix=/home/shengjie/catkin_ws/devel
+
+Name: Untitled_description
+Description: Description of Untitled_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

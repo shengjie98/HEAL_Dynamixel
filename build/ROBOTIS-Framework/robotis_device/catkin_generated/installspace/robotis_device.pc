@@ -1,0 +1,8 @@
+prefix=/home/shengjie/catkin_ws/install
+
+Name: robotis_device
+Description: Description of robotis_device
+Version: 0.2.9
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lrobotis_device
+Requires: roscpp dynamixel_sdk

@@ -1,0 +1,8 @@
+prefix=/home/shengjie/catkin_ws/install
+
+Name: robotis_framework_common
+Description: Description of robotis_framework_common
+Version: 0.2.9
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lrobotis_framework_common
+Requires: roscpp robotis_device

@@ -1,0 +1,8 @@
+prefix=/home/shengjie/catkin_ws/install
+
+Name: robotis_controller
+Description: Description of robotis_controller
+Version: 0.2.9
+Cflags: -I${prefix}/include -I/usr/include
+Libs: -L${prefix}/lib -lrobotis_controller
+Requires: roscpp roslib std_msgs sensor_msgs robotis_controller_msgs dynamixel_sdk robotis_device robotis_framework_common cmake_modules
