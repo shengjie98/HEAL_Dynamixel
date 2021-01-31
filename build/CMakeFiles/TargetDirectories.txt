@@ -217,11 +217,12 @@
 /home/shengjie/catkin_ws/build/heal_dmc_controller/CMakeFiles/test.dir
 /home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/list_install_components.dir
 /home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/install.dir
+/home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/edit_cache.dir
 /home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/rebuild_cache.dir
+/home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/hardware_test_operator.dir
+/home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/test.dir
 /home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/install/strip.dir
 /home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/install/local.dir
-/home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/test.dir
-/home/shengjie/catkin_ws/build/heal_dmc_operator/CMakeFiles/edit_cache.dir
 /home/shengjie/catkin_ws/build/ROBOTIS-Framework-msgs/robotis_controller_msgs/CMakeFiles/list_install_components.dir
 /home/shengjie/catkin_ws/build/ROBOTIS-Framework-msgs/robotis_controller_msgs/CMakeFiles/install.dir
 /home/shengjie/catkin_ws/build/ROBOTIS-Framework-msgs/robotis_controller_msgs/CMakeFiles/rebuild_cache.dir

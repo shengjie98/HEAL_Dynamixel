@@ -24,15 +24,13 @@ HealDMCController::HealDMCController()
    is_joint_state_topic_(false),
    use_moveit_(false),
    is_hardware_test_topic_(false), 
-   wheel_separation_(0.0f),
-   wheel_radius_(0.0f),
    is_moving_(false), 
    val_per_rad_(1024 / (M_PI *10 / 6))
 {
   is_joint_state_topic_ = priv_node_handle_.param<bool>("use_joint_states_topic", true);
   is_sin_pos_topic_ = priv_node_handle_.param<bool>("use_sin_pos", false);
   use_moveit_ = priv_node_handle_.param<bool>("use_moveit", false);
-  is_hardware_test_topic_ = priv_node_hanfle_.param<bool>("is_hardware_test", false);
+  is_hardware_test_topic_ = priv_node_handle_.param<bool>("is_hardware_test", false);
 
   read_period_ = priv_node_handle_.param<double>("dxl_read_period", 0.010f);
   write_period_ = priv_node_handle_.param<double>("dxl_write_period", 0.010f);
@@ -326,7 +324,7 @@ void HealDMCController::initSubscriber()
   if (is_hardware_test_topic_)
   {
     hardware_test_sub_ = priv_node_handle_.subscribe("cmd_vel", 10, &HealDMCController::hardwareTestCallback, this);
-    ROS_INFO("Starting Hardware Test, Subscribing onto 'cmd_vel' topic")
+    ROS_INFO("Starting Hardware Test, Subscribing onto 'cmd_vel' topic");
   }
 }
 
@@ -542,7 +540,7 @@ void HealDMCController::sinPositionCallback(const std_msgs::Float64::ConstPtr &m
 
 }
 
-void HealDMCContoller::hardwareTestCallback(const geometry_msgs::Twist::ConstPtr &msg)
+void HealDMCController::hardwareTestCallback(const geometry_msgs::Twist::ConstPtr &msg)
 {
   bool result = false;
   const char* log = NULL;
@@ -554,7 +552,6 @@ void HealDMCContoller::hardwareTestCallback(const geometry_msgs::Twist::ConstPtr
       dynamixel_velocity[i] = 0;
     }
   }
-
   const uint8_t LEFTRIGHT = 0;
   const uint8_t UPDOWN = 1;
 
@@ -564,6 +561,7 @@ void HealDMCContoller::hardwareTestCallback(const geometry_msgs::Twist::ConstPtr
   uint8_t id_array[dynamixel_.size()];
   uint8_t id_cnt = 0;
 
+  // ROS_INFO("%f", left_right_vel);
   for (auto const& dxl:dynamixel_)
   {
     id_array[id_cnt++] = (uint8_t)dxl.second;

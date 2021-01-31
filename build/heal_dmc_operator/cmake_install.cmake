@@ -47,3 +47,14 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/heal_dmc_operator" TYPE FILE FILES "/home/shengjie/catkin_ws/src/heal_dmc_operator/package.xml")
 endif()
 
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/heal_dmc_operator" TYPE DIRECTORY FILES "/home/shengjie/catkin_ws/src/heal_dmc_operator/include/heal_dmc_operator/")
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/heal_dmc_operator" TYPE DIRECTORY FILES
+    "/home/shengjie/catkin_ws/src/heal_dmc_operator/launch"
+    "/home/shengjie/catkin_ws/src/heal_dmc_operator/config"
+    )
+endif()
+

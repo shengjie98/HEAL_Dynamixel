@@ -78,6 +78,17 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -88,6 +99,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
 
 # Special rule for the target install/strip
 install/strip: preinstall
@@ -110,28 +132,6 @@ install/local: preinstall
 install/local/fast: install/local
 
 .PHONY : install/local/fast
-
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -165,6 +165,48 @@ depend:
 	cd /home/shengjie/catkin_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+# Convenience name for target.
+heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/rule:
+	cd /home/shengjie/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/rule
+.PHONY : heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/rule
+
+# Convenience name for target.
+hardware_test_operator: heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/rule
+
+.PHONY : hardware_test_operator
+
+# fast build rule for target.
+hardware_test_operator/fast:
+	cd /home/shengjie/catkin_ws/build && $(MAKE) -f heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/build.make heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/build
+.PHONY : hardware_test_operator/fast
+
+src/hardware_test_operator.o: src/hardware_test_operator.cpp.o
+
+.PHONY : src/hardware_test_operator.o
+
+# target to build an object file
+src/hardware_test_operator.cpp.o:
+	cd /home/shengjie/catkin_ws/build && $(MAKE) -f heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/build.make heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/src/hardware_test_operator.cpp.o
+.PHONY : src/hardware_test_operator.cpp.o
+
+src/hardware_test_operator.i: src/hardware_test_operator.cpp.i
+
+.PHONY : src/hardware_test_operator.i
+
+# target to preprocess a source file
+src/hardware_test_operator.cpp.i:
+	cd /home/shengjie/catkin_ws/build && $(MAKE) -f heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/build.make heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/src/hardware_test_operator.cpp.i
+.PHONY : src/hardware_test_operator.cpp.i
+
+src/hardware_test_operator.s: src/hardware_test_operator.cpp.s
+
+.PHONY : src/hardware_test_operator.s
+
+# target to generate assembly for a file
+src/hardware_test_operator.cpp.s:
+	cd /home/shengjie/catkin_ws/build && $(MAKE) -f heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/build.make heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/src/hardware_test_operator.cpp.s
+.PHONY : src/hardware_test_operator.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -173,11 +215,15 @@ help:
 	@echo "... depend"
 	@echo "... list_install_components"
 	@echo "... install"
+	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... hardware_test_operator"
+	@echo "... test"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... test"
-	@echo "... edit_cache"
+	@echo "... src/hardware_test_operator.o"
+	@echo "... src/hardware_test_operator.i"
+	@echo "... src/hardware_test_operator.s"
 .PHONY : help
 
 
