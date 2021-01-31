@@ -20,11 +20,14 @@
 #define DYNAMIXEL_WORKBENCH_CONTROLLERS_H
 
 #include <ros/ros.h>
+#include <cmath>
+#include <math.h>
 
 #include <yaml-cpp/yaml.h>
 
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/Float64.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <trajectory_msgs/JointTrajectoryPoint.h>
 
@@ -65,6 +68,9 @@ class DynamixelController
   // ROS Topic Subscriber
   ros::Subscriber cmd_vel_sub_;
   ros::Subscriber trajectory_sub_;
+  // new 
+  ros::Subscriber sin_pos_sub_;
+
 
   // ROS Service Server
   ros::ServiceServer dynamixel_command_server_;
@@ -84,6 +90,8 @@ class DynamixelController
   bool is_joint_state_topic_;
   bool is_cmd_vel_topic_;
   bool use_moveit_;
+  // new
+  bool is_sin_pos_topic_;
 
   double wheel_separation_;
   double wheel_radius_;
@@ -97,7 +105,10 @@ class DynamixelController
 
   bool is_moving_;
 
- public:
+  //new 
+  double val_per_rad_;
+
+public:
   DynamixelController();
   ~DynamixelController();
 
@@ -126,6 +137,9 @@ class DynamixelController
   void trajectoryMsgCallback(const trajectory_msgs::JointTrajectory::ConstPtr &msg);
   bool dynamixelCommandMsgCallback(dynamixel_workbench_msgs::DynamixelCommand::Request &req,
                                    dynamixel_workbench_msgs::DynamixelCommand::Response &res);
+  
+  // new 21/01
+  void sinPositionCallback(const std_msgs::Float64::ConstPtr &msg);
 };
 
 #endif //DYNAMIXEL_WORKBENCH_CONTROLLERS_H

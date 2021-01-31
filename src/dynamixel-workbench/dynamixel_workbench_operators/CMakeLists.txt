@@ -12,6 +12,7 @@ add_compile_options(-std=c++11)
 ################################################################################
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_srvs
   geometry_msgs
   sensor_msgs
@@ -92,3 +93,8 @@ install(DIRECTORY launch config
 ################################################################################
 # Test
 ################################################################################
+
+
+catkin_install_python(PROGRAMS scripts/sin_pos_operator.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

@@ -80,6 +80,7 @@ dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workben
  /opt/ros/kinetic/include/ros/wall_timer_options.h
  /opt/ros/kinetic/include/rosconsole/macros_generated.h
  /opt/ros/kinetic/include/sensor_msgs/JointState.h
+ /opt/ros/kinetic/include/std_msgs/Float64.h
  /opt/ros/kinetic/include/std_msgs/Header.h
  /opt/ros/kinetic/include/trajectory_msgs/JointTrajectory.h
  /opt/ros/kinetic/include/trajectory_msgs/JointTrajectoryPoint.h

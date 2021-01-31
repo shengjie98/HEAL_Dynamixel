@@ -1,0 +1,8 @@
+prefix=/home/shengjie/catkin_ws/devel
+
+Name: heal_dmc_operator
+Description: Description of heal_dmc_operator
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

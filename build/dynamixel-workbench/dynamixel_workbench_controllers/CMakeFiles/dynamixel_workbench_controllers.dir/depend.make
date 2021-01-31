@@ -79,6 +79,7 @@ dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workben
 dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workbench_controllers.dir/src/dynamixel_workbench_controllers.cpp.o: /opt/ros/kinetic/include/ros/wall_timer_options.h
 dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workbench_controllers.dir/src/dynamixel_workbench_controllers.cpp.o: /opt/ros/kinetic/include/rosconsole/macros_generated.h
 dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workbench_controllers.dir/src/dynamixel_workbench_controllers.cpp.o: /opt/ros/kinetic/include/sensor_msgs/JointState.h
+dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workbench_controllers.dir/src/dynamixel_workbench_controllers.cpp.o: /opt/ros/kinetic/include/std_msgs/Float64.h
 dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workbench_controllers.dir/src/dynamixel_workbench_controllers.cpp.o: /opt/ros/kinetic/include/std_msgs/Header.h
 dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workbench_controllers.dir/src/dynamixel_workbench_controllers.cpp.o: /opt/ros/kinetic/include/trajectory_msgs/JointTrajectory.h
 dynamixel-workbench/dynamixel_workbench_controllers/CMakeFiles/dynamixel_workbench_controllers.dir/src/dynamixel_workbench_controllers.cpp.o: /opt/ros/kinetic/include/trajectory_msgs/JointTrajectoryPoint.h

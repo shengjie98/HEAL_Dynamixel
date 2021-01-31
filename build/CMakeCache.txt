@@ -196,6 +196,9 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Path to a program.
 DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
 
+//The directory containing a CMake configuration file for DynamixelSDK.
+DynamixelSDK_DIR:PATH=DynamixelSDK_DIR-NOTFOUND
+
 //Path to a program.
 EMPY_EXECUTABLE:FILEPATH=/usr/bin/empy
 
@@ -301,6 +304,9 @@ cmake_modules_DIR:PATH=/opt/ros/kinetic/share/cmake_modules/cmake
 //The directory containing a CMake configuration file for cpp_common.
 cpp_common_DIR:PATH=/opt/ros/kinetic/share/cpp_common/cmake
 
+//The directory containing a CMake configuration file for dynamixel-workbench.
+dynamixel-workbench_DIR:PATH=dynamixel-workbench_DIR-NOTFOUND
+
 //Value Computed by CMake
 dynamixel_sdk_BINARY_DIR:STATIC=/home/shengjie/catkin_ws/build/DynamixelSDK/ros/dynamixel_sdk
 
@@ -322,11 +328,17 @@ dynamixel_sdk_examples_SOURCE_DIR:STATIC=/home/shengjie/catkin_ws/src/DynamixelS
 //Value Computed by CMake
 dynamixel_workbench_BINARY_DIR:STATIC=/home/shengjie/catkin_ws/build/dynamixel-workbench/dynamixel_workbench
 
+//The directory containing a CMake configuration file for dynamixel_workbench.
+dynamixel_workbench_DIR:PATH=dynamixel_workbench_DIR-NOTFOUND
+
 //Value Computed by CMake
 dynamixel_workbench_SOURCE_DIR:STATIC=/home/shengjie/catkin_ws/src/dynamixel-workbench/dynamixel_workbench
 
 //Value Computed by CMake
 dynamixel_workbench_controllers_BINARY_DIR:STATIC=/home/shengjie/catkin_ws/build/dynamixel-workbench/dynamixel_workbench_controllers
+
+//The directory containing a CMake configuration file for dynamixel_workbench_controllers.
+dynamixel_workbench_controllers_DIR:PATH=/home/shengjie/catkin_ws/devel/share/dynamixel_workbench_controllers/cmake
 
 //Value Computed by CMake
 dynamixel_workbench_controllers_SOURCE_DIR:STATIC=/home/shengjie/catkin_ws/src/dynamixel-workbench/dynamixel_workbench_controllers
@@ -342,6 +354,9 @@ dynamixel_workbench_msgs_SOURCE_DIR:STATIC=/home/shengjie/catkin_ws/src/dynamixe
 
 //Value Computed by CMake
 dynamixel_workbench_operators_BINARY_DIR:STATIC=/home/shengjie/catkin_ws/build/dynamixel-workbench/dynamixel_workbench_operators
+
+//The directory containing a CMake configuration file for dynamixel_workbench_operators.
+dynamixel_workbench_operators_DIR:PATH=/home/shengjie/catkin_ws/devel/share/dynamixel_workbench_operators/cmake
 
 //Value Computed by CMake
 dynamixel_workbench_operators_SOURCE_DIR:STATIC=/home/shengjie/catkin_ws/src/dynamixel-workbench/dynamixel_workbench_operators
@@ -418,6 +433,18 @@ gtest_force_shared_crt:BOOL=OFF
 
 //Dependencies for the target
 gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
+
+//Value Computed by CMake
+heal_dmc_controller_BINARY_DIR:STATIC=/home/shengjie/catkin_ws/build/heal_dmc_controller
+
+//Value Computed by CMake
+heal_dmc_controller_SOURCE_DIR:STATIC=/home/shengjie/catkin_ws/src/heal_dmc_controller
+
+//Value Computed by CMake
+heal_dmc_operator_BINARY_DIR:STATIC=/home/shengjie/catkin_ws/build/heal_dmc_operator
+
+//Value Computed by CMake
+heal_dmc_operator_SOURCE_DIR:STATIC=/home/shengjie/catkin_ws/src/heal_dmc_operator
 
 //Path to a library.
 lib:FILEPATH=/opt/ros/kinetic/lib/librospack.so
@@ -627,7 +654,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=17
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=18
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

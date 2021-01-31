@@ -98,3 +98,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     )
 endif()
 
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/dynamixel_workbench_operators" TYPE PROGRAM FILES "/home/shengjie/catkin_ws/build/dynamixel-workbench/dynamixel_workbench_operators/catkin_generated/installspace/sin_pos_operator.py")
+endif()
+
