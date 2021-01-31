@@ -1,0 +1,8 @@
+prefix=/home/shengjie/catkin_ws/devel
+
+Name: heal_dmc_controller
+Description: Description of heal_dmc_controller
+Version: 0.0.0
+Cflags: -I/home/shengjie/catkin_ws/src/heal_dmc_controller/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib -lheal_dmc_controller
+Requires: roscpp sensor_msgs geometry_msgs dynamixel_workbench_msgs trajectory_msgs dynamixel_workbench_toolbox cmake_modules rospy

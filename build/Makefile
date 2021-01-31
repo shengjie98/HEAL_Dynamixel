@@ -1609,6 +1609,32 @@ std_srvs_generate_messages_cpp/fast:
 .PHONY : std_srvs_generate_messages_cpp/fast
 
 #=============================================================================
+# Target rules for targets named heal_dmc_controller
+
+# Build rule for target.
+heal_dmc_controller: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 heal_dmc_controller
+.PHONY : heal_dmc_controller
+
+# fast build rule for target.
+heal_dmc_controller/fast:
+	$(MAKE) -f heal_dmc_controller/CMakeFiles/heal_dmc_controller.dir/build.make heal_dmc_controller/CMakeFiles/heal_dmc_controller.dir/build
+.PHONY : heal_dmc_controller/fast
+
+#=============================================================================
+# Target rules for targets named hardware_test_operator
+
+# Build rule for target.
+hardware_test_operator: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hardware_test_operator
+.PHONY : hardware_test_operator
+
+# fast build rule for target.
+hardware_test_operator/fast:
+	$(MAKE) -f heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/build.make heal_dmc_operator/CMakeFiles/hardware_test_operator.dir/build
+.PHONY : hardware_test_operator/fast
+
+#=============================================================================
 # Target rules for targets named _robotis_controller_msgs_generate_messages_check_deps_JointCtrlModule
 
 # Build rule for target.
@@ -1992,6 +2018,8 @@ help:
 	@echo "... wheel_operator"
 	@echo "... std_srvs_generate_messages_py"
 	@echo "... std_srvs_generate_messages_cpp"
+	@echo "... heal_dmc_controller"
+	@echo "... hardware_test_operator"
 	@echo "... _robotis_controller_msgs_generate_messages_check_deps_JointCtrlModule"
 	@echo "... _robotis_controller_msgs_generate_messages_check_deps_WriteControlTable"
 	@echo "... robotis_controller_msgs_geneus"

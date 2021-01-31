@@ -26,10 +26,12 @@ DynamixelController::DynamixelController()
    use_moveit_(false),
    wheel_separation_(0.0f),
    wheel_radius_(0.0f),
-   is_moving_(false)
+   is_moving_(false), 
+   val_per_rad_(1024 / (M_PI *10 / 6))
 {
   is_joint_state_topic_ = priv_node_handle_.param<bool>("use_joint_states_topic", true);
   is_cmd_vel_topic_ = priv_node_handle_.param<bool>("use_cmd_vel_topic", false);
+  is_sin_pos_topic_ = priv_node_handle_.param<bool>("use_sin_pos", false);
   use_moveit_ = priv_node_handle_.param<bool>("use_moveit", false);
 
   read_period_ = priv_node_handle_.param<double>("dxl_read_period", 0.010f);
@@ -323,6 +325,11 @@ void DynamixelController::initSubscriber()
 {
   trajectory_sub_ = priv_node_handle_.subscribe("joint_trajectory", 100, &DynamixelController::trajectoryMsgCallback, this);
   if (is_cmd_vel_topic_) cmd_vel_sub_ = priv_node_handle_.subscribe("cmd_vel", 10, &DynamixelController::commandVelocityCallback, this);
+  if (is_sin_pos_topic_) 
+  {
+    sin_pos_sub_ = priv_node_handle_.subscribe("sin_pos", 10, &DynamixelController::sinPositionCallback, this);
+    ROS_INFO("Sin Pos Topic: value per rad %f", val_per_rad_);
+  }
 }
 
 void DynamixelController::initServer()
@@ -501,6 +508,44 @@ void DynamixelController::publishCallback(const ros::TimerEvent&)
   ROS_WARN("[publishCallback] diff_secs : %f", ros::Time::now().toSec() - priv_pub_secs);
   priv_pub_secs = ros::Time::now().toSec();
 #endif
+}
+
+// NEW 21/01 TODO
+void DynamixelController::sinPositionCallback(const std_msgs::Float64::ConstPtr &msg) 
+{
+  bool result = false;
+  const char* log = NULL;
+  double i;
+  
+  // array to store dynamixel position
+  int32_t dynamixel_positions[dynamixel_.size()];
+  uint8_t id_array[dynamixel_.size()];
+  uint8_t id_cnt = 0;
+
+
+  float rpm = 0.0;
+  for (auto const& dxl:dynamixel_)
+  {
+    const ModelInfo *modelInfo = dxl_wb_->getModelInfo((uint8_t)dxl.second);
+    rpm = modelInfo->rpm;
+    id_array[id_cnt++] = (uint8_t)dxl.second;
+  }
+
+
+  double global_phase = msg->data;
+  for (i = 0; i < dynamixel_.size(); i++) 
+  {
+    dynamixel_positions[(int)i] =  tan(sin(fmod((i * M_PI_4 + global_phase) , (2.0 * M_PI)))) * val_per_rad_ + 512;
+    ROS_INFO("%f",  atan(sin(fmod((i * M_PI_4 + global_phase) , (2.0 * M_PI)))) * val_per_rad_ + 512);
+  }
+  
+  
+  result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_POSITION, id_array, dynamixel_.size(), dynamixel_positions, 1, &log);
+  if (result == false)
+  {
+    ROS_ERROR("%s", log);
+  }
+
 }
 
 void DynamixelController::commandVelocityCallback(const geometry_msgs::Twist::ConstPtr &msg)
