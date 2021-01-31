@@ -22,30 +22,24 @@ HealDMCController::HealDMCController()
   :node_handle_(""),
    priv_node_handle_("~"),
    is_joint_state_topic_(false),
-   is_cmd_vel_topic_(false),
    use_moveit_(false),
+   is_hardware_test_topic_(false), 
    wheel_separation_(0.0f),
    wheel_radius_(0.0f),
    is_moving_(false), 
    val_per_rad_(1024 / (M_PI *10 / 6))
 {
   is_joint_state_topic_ = priv_node_handle_.param<bool>("use_joint_states_topic", true);
-  is_cmd_vel_topic_ = priv_node_handle_.param<bool>("use_cmd_vel_topic", false);
   is_sin_pos_topic_ = priv_node_handle_.param<bool>("use_sin_pos", false);
   use_moveit_ = priv_node_handle_.param<bool>("use_moveit", false);
+  is_hardware_test_topic_ = priv_node_hanfle_.param<bool>("is_hardware_test", false);
 
   read_period_ = priv_node_handle_.param<double>("dxl_read_period", 0.010f);
   write_period_ = priv_node_handle_.param<double>("dxl_write_period", 0.010f);
   pub_period_ = priv_node_handle_.param<double>("publish_period", 0.010f);
 
-  if (is_cmd_vel_topic_ == true)
-  {
-    wheel_separation_ = priv_node_handle_.param<double>("mobile_robot_config/seperation_between_wheels", 0.0);
-    wheel_radius_ = priv_node_handle_.param<double>("mobile_robot_config/radius_of_wheel", 0.0);
-  }
 
   dxl_wb_ = new DynamixelWorkbench;
-//   jnt_tra_ = new JointTrajectory;
   jnt_tra_msg_ = new trajectory_msgs::JointTrajectory;
 }
 
@@ -323,12 +317,16 @@ void HealDMCController::initPublisher()
 
 void HealDMCController::initSubscriber()
 {
-//   trajectory_sub_ = priv_node_handle_.subscribe("joint_trajectory", 100, &HealDMCController::trajectoryMsgCallback, this);
-  if (is_cmd_vel_topic_) cmd_vel_sub_ = priv_node_handle_.subscribe("cmd_vel", 10, &HealDMCController::commandVelocityCallback, this);
   if (is_sin_pos_topic_) 
   {
     sin_pos_sub_ = priv_node_handle_.subscribe("sin_pos", 10, &HealDMCController::sinPositionCallback, this);
     ROS_INFO("Sin Pos Topic: value per rad %f", val_per_rad_);
+  }
+
+  if (is_hardware_test_topic_)
+  {
+    hardware_test_sub_ = priv_node_handle_.subscribe("cmd_vel", 10, &HealDMCController::hardwareTestCallback, this);
+    ROS_INFO("Starting Hardware Test, Subscribing onto 'cmd_vel' topic")
   }
 }
 
@@ -522,12 +520,8 @@ void HealDMCController::sinPositionCallback(const std_msgs::Float64::ConstPtr &m
   uint8_t id_array[dynamixel_.size()];
   uint8_t id_cnt = 0;
 
-
-  float rpm = 0.0;
   for (auto const& dxl:dynamixel_)
   {
-    const ModelInfo *modelInfo = dxl_wb_->getModelInfo((uint8_t)dxl.second);
-    rpm = modelInfo->rpm;
     id_array[id_cnt++] = (uint8_t)dxl.second;
   }
 
@@ -548,65 +542,54 @@ void HealDMCController::sinPositionCallback(const std_msgs::Float64::ConstPtr &m
 
 }
 
-void HealDMCController::commandVelocityCallback(const geometry_msgs::Twist::ConstPtr &msg)
+void HealDMCContoller::hardwareTestCallback(const geometry_msgs::Twist::ConstPtr &msg)
 {
   bool result = false;
   const char* log = NULL;
 
-  double wheel_velocity[dynamixel_.size()];
   int32_t dynamixel_velocity[dynamixel_.size()];
 
-  const uint8_t LEFT = 0;
-  const uint8_t RIGHT = 1;
+  if (dynamixel_.size() > 2){
+    for(int i = 2; i < dynamixel_.size(); i++) {
+      dynamixel_velocity[i] = 0;
+    }
+  }
 
-  double robot_lin_vel = msg->linear.x;
-  double robot_ang_vel = msg->angular.z;
+  const uint8_t LEFTRIGHT = 0;
+  const uint8_t UPDOWN = 1;
+
+  double left_right_vel = msg->angular.z;
+  double up_down_vel = msg->angular.y;
 
   uint8_t id_array[dynamixel_.size()];
   uint8_t id_cnt = 0;
 
-  float rpm = 0.0;
   for (auto const& dxl:dynamixel_)
   {
-    const ModelInfo *modelInfo = dxl_wb_->getModelInfo((uint8_t)dxl.second);
-    rpm = modelInfo->rpm;
     id_array[id_cnt++] = (uint8_t)dxl.second;
   }
+  
+  if (left_right_vel == 0.0f) {
+    dynamixel_velocity[LEFTRIGHT] = 0;
+  } else if (left_right_vel < 0.0f){
+    // cw robot turning right
+    dynamixel_velocity[LEFTRIGHT] = ((-1.0f) * left_right_vel) + 1023;
+  } else {
+    // ccw robot turnin left
+    dynamixel_velocity[LEFTRIGHT] = left_right_vel;
+  } 
+  
+  if (up_down_vel == 0.0f) {
+    dynamixel_velocity[UPDOWN] = 0;
+  } else if (up_down_vel < 0.0f){
+    // cw robot going up
+    dynamixel_velocity[UPDOWN] = ((-1.0f) * up_down_vel) + 1023;
+  } else {
+    // ccw robot going down 
+    dynamixel_velocity[UPDOWN] = up_down_vel;
+  } 
+  
 
-
-  double velocity_constant_value = 1 / (wheel_radius_ * rpm * 0.10472);
-
-  wheel_velocity[LEFT]  = robot_lin_vel - (robot_ang_vel * wheel_separation_ / 2);
-  wheel_velocity[RIGHT] = robot_lin_vel + (robot_ang_vel * wheel_separation_ / 2);
-
-  if (dxl_wb_->getProtocolVersion() == 2.0f)
-  {
-    if (strcmp(dxl_wb_->getModelName(id_array[0]), "XL-320") == 0)
-    {
-      if (wheel_velocity[LEFT] == 0.0f) dynamixel_velocity[LEFT] = 0;
-      else if (wheel_velocity[LEFT] < 0.0f) dynamixel_velocity[LEFT] = ((-1.0f) * wheel_velocity[LEFT]) * velocity_constant_value + 1023;
-      else if (wheel_velocity[LEFT] > 0.0f) dynamixel_velocity[LEFT] = (wheel_velocity[LEFT] * velocity_constant_value);
-
-      if (wheel_velocity[RIGHT] == 0.0f) dynamixel_velocity[RIGHT] = 0;
-      else if (wheel_velocity[RIGHT] < 0.0f)  dynamixel_velocity[RIGHT] = ((-1.0f) * wheel_velocity[RIGHT] * velocity_constant_value) + 1023;
-      else if (wheel_velocity[RIGHT] > 0.0f)  dynamixel_velocity[RIGHT] = (wheel_velocity[RIGHT] * velocity_constant_value);
-    }
-    else
-    {
-      dynamixel_velocity[LEFT]  = wheel_velocity[LEFT] * velocity_constant_value;
-      dynamixel_velocity[RIGHT] = wheel_velocity[RIGHT] * velocity_constant_value;
-    }
-  }
-  else if (dxl_wb_->getProtocolVersion() == 1.0f)
-  {
-    if (wheel_velocity[LEFT] == 0.0f) dynamixel_velocity[LEFT] = 0;
-    else if (wheel_velocity[LEFT] < 0.0f) dynamixel_velocity[LEFT] = ((-1.0f) * wheel_velocity[LEFT]) * velocity_constant_value + 1023;
-    else if (wheel_velocity[LEFT] > 0.0f) dynamixel_velocity[LEFT] = (wheel_velocity[LEFT] * velocity_constant_value);
-
-    if (wheel_velocity[RIGHT] == 0.0f) dynamixel_velocity[RIGHT] = 0;
-    else if (wheel_velocity[RIGHT] < 0.0f)  dynamixel_velocity[RIGHT] = ((-1.0f) * wheel_velocity[RIGHT] * velocity_constant_value) + 1023;
-    else if (wheel_velocity[RIGHT] > 0.0f)  dynamixel_velocity[RIGHT] = (wheel_velocity[RIGHT] * velocity_constant_value);
-  }
 
   result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_VELOCITY, id_array, dynamixel_.size(), dynamixel_velocity, 1, &log);
   if (result == false)
@@ -614,6 +597,7 @@ void HealDMCController::commandVelocityCallback(const geometry_msgs::Twist::Cons
     ROS_ERROR("%s", log);
   }
 }
+
 
 void HealDMCController::writeCallback(const ros::TimerEvent&)
 {
@@ -694,10 +678,10 @@ bool HealDMCController::dynamixelCommandMsgCallback(dynamixel_workbench_msgs::Dy
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "dynamixel_workbench_controllers");
+  ros::init(argc, argv, "heal_dmc_controller");
   ros::NodeHandle node_handle("");
 
-  std::string port_name = "/dev/ttyUSB0";
+  std::string port_name = "/dev/tty/ACM0";
   uint32_t baud_rate = 57600;
 
   if (argc < 2)

@@ -70,6 +70,7 @@ class HealDMCController
   ros::Subscriber trajectory_sub_;
   // new 
   ros::Subscriber sin_pos_sub_;
+  ros::Subscriber hardware_test_sub_;
 
 
   // ROS Service Server
@@ -88,13 +89,10 @@ class HealDMCController
   std::vector<WayPoint> pre_goal_;
 
   bool is_joint_state_topic_;
-  bool is_cmd_vel_topic_;
   bool use_moveit_;
   // new
   bool is_sin_pos_topic_;
-
-  double wheel_separation_;
-  double wheel_radius_;
+  bool is_hardware_test_topic_;
 
   JointTrajectory *jnt_tra_;
   trajectory_msgs::JointTrajectory *jnt_tra_msg_;
@@ -133,13 +131,13 @@ public:
   void writeCallback(const ros::TimerEvent&);
   void publishCallback(const ros::TimerEvent&);
 
-  void commandVelocityCallback(const geometry_msgs::Twist::ConstPtr &msg);
 //   void trajectoryMsgCallback(const trajectory_msgs::JointTrajectory::ConstPtr &msg);
   bool dynamixelCommandMsgCallback(dynamixel_workbench_msgs::DynamixelCommand::Request &req,
                                    dynamixel_workbench_msgs::DynamixelCommand::Response &res);
   
   // new 21/01
   void sinPositionCallback(const std_msgs::Float64::ConstPtr &msg);
+  void hardwareTestCallback(const geometry_msgs::Twist::ConstPtr &msg);
 };
 
 #endif //DYNAMIXEL_WORKBENCH_CONTROLLERS_H

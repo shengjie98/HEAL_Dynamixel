@@ -5,11 +5,11 @@
 
   <arg name="use_moveit"              default="false"/>
   <arg name="use_joint_state"         default="true"/>
-  <arg name="use_sin_pos"             default="true"/>
-  <arg name="is_hardware_test"        default="false"/>
-  
+  <arg name="use_sin_pos"             default="false"/>
+  <arg name="is_hardware_test"        default="true"/>
 
-  <param name="dynamixel_info"          value="$(find heal_dmc_controller)/config/test.yaml"/>
+
+  <param name="dynamixel_info"          value="$(find heal_dmc_controller)/config/hardware_test.yaml"/>
 
   <node name="$(arg namespace)" pkg="heal_dmc_controller" type="heal_dmc_controller"
         required="true" output="screen" args="$(arg usb_port) $(arg dxl_baud_rate)">
