@@ -4,6 +4,8 @@ Ubuntu 16.04 with ROS kinetic
 ## 1. To run hardware test 
 
 In src/heal_dmc_controllers/config/hardware_test.yaml, change the id to the id of the dynamixels used
+
+Delete /devel and /build
 ```
 left_right:
   ID: 200               <--- change this
