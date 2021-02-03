@@ -27,6 +27,7 @@ $ sudo chown [ubuntu username] /dev/ttyACM0
 ```
 Running the test
 ```
+$ sudo chmod +rwx src/heal_dmc_controllers/launch/hardware_test.launch
 $ roslaunch heal_dmc_controllers hardware_test.launch
 ```
 Note: Stop the dynamixels by pressing 's' before killing the process, otherwise the dynamixel will continue to run. To resolve this, restart the node, the dynamixel should stop
